@@ -4,7 +4,7 @@ let context = canvas.getContext('2d');
 let _timer = 0,
     backgr_bottom_pos = 0,
     backgr_top_pos = 0,
-    player;
+    player, bullet;
 
 backgr = new Image();
 backgr.src = '/_assets/img/backgr.jpg';
@@ -12,6 +12,8 @@ backgr_bottom = new Image();
 backgr_bottom.src = '/_assets/img/backgr-bottom.png';
 backgr_top = new Image();
 backgr_top.src = '/_assets/img/backgr-top.png';
+bullet_img = new Image();
+bullet_img.src = '/_assets/img/bullet.png';
 player_img = new Image();
 player_img.src = '/_assets/img/player.png';
 
@@ -44,6 +46,14 @@ function init() {
         speedr: 0,
         speedl: 0,
     };
+    bullet = {
+        x: 50,
+        y: 400,
+        left: false,
+        right: false,
+        speedr: 0,
+        speedl: 0,
+    };
     document.addEventListener("keydown", function (event) {
         if (event.key == 'ArrowRight') {
             player.right = true;
@@ -60,6 +70,22 @@ function init() {
             player.left = false;
         }
     });
+    canvas.addEventListener("click", function (event) {
+		bullet.x = event.offsetX - 8;
+		bullet.y = event.offsetY - 2;
+	});
+    document.oncontextmenu = function (event) {
+        event.preventDefault();
+        player = {
+            x: 50,
+            y: 400,
+            left: false,
+            right: false,
+            speedr: 0,
+            speedl: 0,
+        };
+        return false;
+    };
 }
 
 //основной игровой цикл
@@ -110,5 +136,6 @@ function render() {
     context.drawImage(backgr_bottom, -backgr_bottom_pos + 600, 0, 600, 600);
     context.drawImage(backgr_top, -backgr_top_pos, 0, 600, 600);
     context.drawImage(backgr_top, -backgr_top_pos + 600, 0, 600, 600);
+    context.drawImage(bullet_img, bullet.x, bullet.y, 19, 24);
     context.drawImage(player_img, player.x, player.y, 60, 60);
 }
