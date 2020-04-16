@@ -4,7 +4,7 @@ let context = canvas.getContext('2d');
 let _timer = 0,
     backgr_bottom_pos = 0,
     backgr_top_pos = 0,
-    player, bullet;
+    player, bullet, cursor;
 
 backgr = new Image();
 backgr.src = '/_assets/img/backgr.jpg';
@@ -16,6 +16,8 @@ bullet_img = new Image();
 bullet_img.src = '/_assets/img/bullet.png';
 player_img = new Image();
 player_img.src = '/_assets/img/player.png';
+cursor_img = new Image();
+cursor_img.src = '/_assets/img/cursor.png';
 
 //старт игры
 backgr_top.onload = function () {
@@ -38,6 +40,10 @@ var requestAnimFrame = (function () {
 //начальные установки
 function init() {
     _timer = 0;
+    cursor = {
+        x: 0,
+        y: 0
+    }
     player = {
         x: 50,
         y: 400,
@@ -86,6 +92,10 @@ function init() {
         };
         return false;
     };
+    canvas.addEventListener("mousemove", function (event) {
+		cursor.x = event.offsetX - 13;
+		cursor.y = event.offsetY - 13;
+	});
 }
 
 //основной игровой цикл
@@ -138,4 +148,5 @@ function render() {
     context.drawImage(backgr_top, -backgr_top_pos + 600, 0, 600, 600);
     context.drawImage(bullet_img, bullet.x, bullet.y, 19, 24);
     context.drawImage(player_img, player.x, player.y, 60, 60);
+    context.drawImage(cursor_img, cursor.x, cursor.y, 25, 25);
 }
