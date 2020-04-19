@@ -19,13 +19,13 @@ player_img.src = '/_assets/img/player.png';
 cursor_img = new Image();
 cursor_img.src = '/_assets/img/cursor.png';
 
-//старт игры
+//LOAD
 backgr_top.onload = function () {
     init();
     game();
 }
 
-//совместимость с браузерами
+//LEGACY
 var requestAnimFrame = (function () {
     return window.requestAnimationFrame ||
         window.webkitRequestAnimationFrame ||
@@ -37,7 +37,7 @@ var requestAnimFrame = (function () {
         };
 })();
 
-//начальные установки
+//INIT
 function init() {
     _timer = 0;
     cursor = {
@@ -53,8 +53,8 @@ function init() {
         speedl: 0,
     };
     bullet = {
-        x: 50,
-        y: 400,
+        x: 700,
+        y: 700,
         left: false,
         right: false,
         speedr: 0,
@@ -67,6 +67,8 @@ function init() {
         if (event.key == 'ArrowLeft') {
             player.left = true;
         }
+        console.log(player.x);
+        console.log(bullet.x);
     });
     document.addEventListener("keyup", function (event) {
         if (event.key == 'ArrowRight') {
@@ -75,11 +77,13 @@ function init() {
         if (event.key == 'ArrowLeft') {
             player.left = false;
         }
+        console.log(player.x);
+        console.log(bullet.x);
     });
     canvas.addEventListener("click", function (event) {
-		bullet.x = event.offsetX - 8;
-		bullet.y = event.offsetY - 2;
-	});
+        bullet.x = event.offsetX - 8;
+        bullet.y = event.offsetY - 2;
+    });
     document.oncontextmenu = function (event) {
         event.preventDefault();
         player = {
@@ -93,25 +97,34 @@ function init() {
         return false;
     };
     canvas.addEventListener("mousemove", function (event) {
-		cursor.x = event.offsetX - 13;
-		cursor.y = event.offsetY - 13;
-	});
+        cursor.x = event.offsetX - 13;
+        cursor.y = event.offsetY - 13;
+    });
 }
 
-//основной игровой цикл
+//INSTANCE
 function game() {
     update();
     render();
     requestAnimFrame(game);
 }
 
-//функция обновления состояния игры
+//ENGINE
 function update() {
     _timer++;
     backgr_bottom_speed = Math.trunc(_timer * 0.7);
     backgr_bottom_pos = backgr_bottom_speed % 600;
     backgr_top_speed = Math.trunc(_timer * 0.3);
     backgr_top_pos = backgr_top_speed % 600;
+    if (player.x + 60 > bullet.x &&
+        player.x < bullet.x + 19 &&
+        player.y + 60 > bullet.y &&
+        player.y < bullet.y + 24) {
+        player.x = player.x - player.speedr;
+        player.speedr = 0;
+        player.x = player.x + player.speedl;
+        player.speedl = 0;
+    }
     if (player.right == true) {
         if (player.speedr < 10) {
             player.speedr++;
@@ -140,6 +153,7 @@ function update() {
     }
 }
 
+// RENDER
 function render() {
     context.drawImage(backgr, 0, 0, 600, 600);
     context.drawImage(backgr_bottom, -backgr_bottom_pos, 0, 600, 600);
