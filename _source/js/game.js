@@ -116,7 +116,7 @@ function update() {
     backgr_bottom_pos = backgr_bottom_speed % 600;
     backgr_top_speed = Math.trunc(_timer * 0.3);
     backgr_top_pos = backgr_top_speed % 600;
-    if (player.x + 60 > bullet.x &&
+    if (player.x + 37 > bullet.x &&
         player.x < bullet.x + 19 &&
         player.y + 60 > bullet.y &&
         player.y < bullet.y + 24) {
@@ -161,6 +161,6 @@ function render() {
     context.drawImage(backgr_top, -backgr_top_pos, 0, 600, 600);
     context.drawImage(backgr_top, -backgr_top_pos + 600, 0, 600, 600);
     context.drawImage(bullet_img, bullet.x, bullet.y, 19, 24);
-    context.drawImage(player_img, player.x, player.y, 60, 60);
+    context.drawImage(player_img, player.x, player.y, 37, 60);
     context.drawImage(cursor_img, cursor.x, cursor.y, 25, 25);
 }
